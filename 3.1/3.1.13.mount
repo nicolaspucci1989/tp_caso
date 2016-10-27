@@ -1,0 +1,17 @@
+sudo mount /dev/cdrom /mnt
+
+total 184
+dr-xr-xr-x  1 root root   2048 Jul 19 18:33 ./
+drwxr-xr-x 21 root root   4096 Aug  9 08:28 ../
+dr-xr-xr-x  1 root root   2048 Jul 19 18:33 boot/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:30 .disk/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:30 dists/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:30 doc/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:33 install/
+dr-xr-xr-x  1 root root  18432 Jul 19 18:33 isolinux/
+-r--r--r--  1 root root 146481 Jul 19 18:33 md5sum.txt
+dr-xr-xr-x  1 root root   2048 Jul 19 18:30 pics/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:31 pool/
+dr-xr-xr-x  1 root root   2048 Jul 19 18:30 preseed/
+-r--r--r--  1 root root    236 Jul 19 18:30 README.diskdefines
+lr-xr-xr-x  1 root root      1 Jul 19 18:30 ubuntu -> ./

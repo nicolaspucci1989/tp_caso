@@ -1,0 +1,4 @@
+El comando: sudo find / -name "vmlinuz*"
+genera la siguiente salida:
+	/boot/vmlinuz-4.4.0-31-generic
+	/vmlinuz

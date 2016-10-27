@@ -1,0 +1,36 @@
+#!/bin/bash
+
+archSalida="$(eval echo ~$USER)/salida.txt"
+archUser="/etc/passwd"
+archGroup="/etc/group"
+
+case "$1" in
+	-u)
+		if [[ 2 -eq $# ]] ; then
+			if  grep -q $2 $archUser; then
+				grep ^$2 $archUser | sed "s/:/	/g" | tee -a  $archSalida
+			else
+				echo "Usuario no encontrado $2" | tee -a $archSalida
+			fi
+		else 
+			cat $archUser | tee -a $archSalida
+		fi
+		;;
+	-g) 
+		 grep ^$2 $archGroup | sed "s/:/	/g" | tee -a $archSalida
+		;;
+	*)
+		echo "opcion incorrecta"
+		exit 1
+esac
+
+#grupo=$1
+#var="$(grep ^$grupo* /etc/group)" 
+#
+#if [[ !($var) ]]; then
+#	echo "Grupo no existe "
+#else
+#	echo "Grupo existe"
+#	echo "$var" | cut -d: -f4	
+#fi
+

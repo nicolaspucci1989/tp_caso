@@ -1,0 +1,10 @@
+df -h
+
+Filesystem   Espacio Libre 		Mounted on
+udev          237M 				 /dev
+tmpfs          49M 				 /run
+/dev/sda1     2.2G 				 /
+none          4.0K 				 /sys/fs/cgroup
+none          5.0M 				 /run/lock
+none          247M 				 /run/shm
+none          100M 				 /run/user

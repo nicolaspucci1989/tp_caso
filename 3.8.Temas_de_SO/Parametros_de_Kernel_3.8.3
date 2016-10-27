@@ -1,0 +1,19 @@
+Determinar la cantidad de memoria RAM que usa el sistema.
+	> vmstat -s | grep "used memory"
+	> 120988 K used memory
+Luego de editar los parametros del kernel, agregando a la linea
+que comienza con Linux los parametros deseados al final de la linea.
+Linux .... "mem=MEMORY_LIMIT" 
+donde MEMORY_LIMIT = 350MB, el comando:
+	> vmstat -s | grep "used memory" 
+produce la siguiente salida:
+	> 100540 K used memory
+
+
+free -t -m
+--------------------------------------------------------------------------
+             total       used       free     shared    buffers     cached
+Mem:           331        101        230          0         17         54
+-/+ buffers/cache:         29        302
+Swap:          509          0        509
+Total:         841        101        740

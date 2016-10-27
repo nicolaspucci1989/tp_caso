@@ -1,0 +1,8 @@
+ln /etc/passwd /tmp/contra1
+ln /etc/passwd /tmp/contra2
+ln -s/etc/passwd /tmp/contra3
+
+total 8
+-rw-r--r-- 3 root root 1150 Aug 18 14:22 contra1
+-rw-r--r-- 3 root root 1150 Aug 18 14:22 contra2
+lrwxrwxrwx 1 nico nico   11 Aug 30 09:56 contra3 -> /etc/passwd

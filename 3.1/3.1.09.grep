@@ -1,0 +1,6 @@
+grep "localhost" /etc/hosts
+127.0.0.1	localhost
+::1     localhost ip6-localhost ip6-loopback
+
+grep -Irs "POSIX" /etc
+/etc/security/limits.conf:#        - msgqueue - max memory used by POSIX message queues (bytes)

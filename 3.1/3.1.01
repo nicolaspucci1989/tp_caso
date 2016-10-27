@@ -1,0 +1,3 @@
+a) Al ejecutar cd /usr/bin, se cambia al directorio /usr/bin.
+b) Al ejecutar cd sin argumentos, se cambia al directorio /home/<usuario>.
+c) El comando cd nos permite cambiar el directorio de trabajo.

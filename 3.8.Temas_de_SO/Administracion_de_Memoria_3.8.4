@@ -1,0 +1,62 @@
+Para determinar el tamanio de la particion SWAP del sistema.
+	> vmstat -s | grep total swap
+	> 522236 K total swap
+
+-----------------------------------------------------------
+Ampliar el tamanio de swap por medio de un a3rchivo en un FS
+
+1- Verificamos el espacio discponible en nuestro fs.
+	> df -h | egrep 'Avail|sda1'
+
+	Produce la siguiente salida.
+	> Filesystem Size Used Avail Use% Mounted on
+	  /dev/sda1  3.4G 1.6G 1.7G  49%  /
+	Tenemos 1.7G disponibles en nuestra particion primaria.
+
+2- Crear un archivo de un tamanio prealocado, menor al tamanio disponible.
+	> fallocate -l <tamanio de archivo> <ubicacion de archivo en el fs> 
+		//Con la opcion -l espicificamos el tamanio de archivo a crear.
+	
+	Ej.
+	> sudo fallocate -l 350M /swapfile
+		
+3- Verificamos la creacion del archivo swapfile en /
+	> ls -lh /swapfile
+	> -rw-r--r-- 1 root root 350M Oct 27 20:09 /swapfile
+	Vemos que se creo el archivo con el tamanio correcto
+
+4- Ya tenemos el archivo creado, pero nuestro sistema todavia no sabe que deberia
+ser usado para swap. Debemos aplicar el formato adecuado para archivo swap y luego habilitarlo.
+	Primero ajustamos los permisos de nuestro nuevo archivo swap, para que solo root pueda leerlo
+Ejecutamos el siguiente comando.
+	
+	> sudo chmod 600 /swapfile
+
+Luego verificamos que el arhicvo tiene los permisos correctos.
+	
+	> ls -lh /swapfile
+	> -rw------- 1 root root 350M Oct 27 20:09 /swapfile
+	//Solo root puede leer y escribir el archivo
+
+5- Ahora que el archivo tiene los permisos adecuados, podemos indicarle al sistema que prepare
+el espacio para swap, ejecutamos:
+	
+	> sudo mkswap /swapfile
+	> Setting up swapspace version 1, size = 358396 KiB
+	  no label, UUID=df87699f-4a1b-4c99-8dda-57c0673cb2de
+
+6- Nuestro archivo esta listo para ser usado como espacio de swap. Lo habilitamos de la siguiente forma
+	
+	> sudo swapon /swapfile
+
+7- Verificamos que el procedimiento tuvo exito.
+	
+	> swapon -s
+	> Filename				Type			Size	 Used	Priority
+	 	/dev/sda5  			partition	522236	0		-1
+	 	/swapfile       file			358396	0		-2
+
+8- Corroboramos el espacio total de swap con el comando free
+	> free -m
+	>            total       used       free
+	Swap:          859          0        859

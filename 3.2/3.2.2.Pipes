@@ -1,0 +1,2 @@
+ls -l /usr/bin/[s]* | grep sys | wc
+      1       9      64
