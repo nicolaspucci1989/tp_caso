@@ -5,6 +5,13 @@ Para determinar el tamanio de la particion SWAP del sistema.
 -----------------------------------------------------------
 Ampliar el tamanio de swap por medio de un a3rchivo en un FS
 
+Comenzamos con un tamanio de swap de 509M
+	> free -m
+             total       used       free     shared    buffers     cached
+Mem:           493        120        373          0         20         68
+-/+ buffers/cache:         32        461
+Swap:          509          0        509
+
 1- Verificamos el espacio discponible en nuestro fs.
 	> df -h | egrep 'Avail|sda1'
 
