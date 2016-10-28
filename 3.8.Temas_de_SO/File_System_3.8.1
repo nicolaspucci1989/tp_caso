@@ -1,0 +1,4 @@
+El espacio de disco se llama file system, tien una estructura jerarquica.
+Se pueden borrar los hardlink sin borrar el archivo porque el hard link es un archivo
+que linkea a un inodo. Cuando se borra el hard link se borra el archivo que apunta al 
+inodo y la cuenta de links del inodo se decrementa en 1, pero no se borra el inodo.
