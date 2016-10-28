@@ -1,0 +1,1 @@
+compilar con:gcc -pthread -o <salida> <fuente>
