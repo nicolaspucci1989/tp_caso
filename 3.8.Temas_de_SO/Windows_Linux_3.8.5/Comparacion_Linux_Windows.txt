@@ -59,3 +59,35 @@ Windows XP usa un schedule con desalojo por quantum, Este scheduler fue modifica
 contador de ciclo presente en los procesadores modernos para hacer el seguimiento de cuantod ciclos de CPU un thread habia ejecutado,
 en vez de usar rutinas de interrupcion por intervalo de tiempo.
 
+
+Administracion de memoria.
+	Estructuras de datos utilizadas
+	
+	Windows.
+		Windows NT usa una estructura llamada Virtual Address Descriptors (VAD) de tipo arbol en lugar de una 
+	lista linkeada.	Cada VAD denota un rango de direcciones que tiene el los mismos parametros de proteccion y encomienda
+	la misma informacion. Cada VAD puede estar en uno de los siguientes tres estados: invalida, reservada, enntregada.
+
+	Linux.
+		Linux mantiene una lista linkeada de estructuras de la memoria virtual. Estas estructuras representan areas memoria 
+	contigua. Cuando se busca una pagina se la busca en la lista. Tambien contiene el rango de direcciones, modo de proteccion
+	y la direccion en la cual crece (hacia arriba o hacia abajo)
+
+	Distribucion del espacion de direcicones de proceso.
+
+		Windows.
+			Windows permite que cada proceso tenga sus 4gb de direcciones logicas usando paginacion.
+			Los 2gb superiores son reservados para modod kernel.
+			Los 2gb inferirores son reservados para modo usuario
+
+		Linux.
+			Se reserva 3gb de espacio de memoria para modo usuario
+			1gb se mantiene para modo kernel.
+
+	Paginacion
+		Linux.
+			Usa paginacion por demandoa sin pre-paginado. 
+
+		Windows usa paginacion por demanda cluster.
+			En lugar de llevar de a una pagina, se envian ocho paginas a memoria de forma simultanea. Usa el modelo de conjunto de 
+			trabajo
