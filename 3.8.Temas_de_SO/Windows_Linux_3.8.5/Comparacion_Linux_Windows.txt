@@ -30,3 +30,10 @@ independientemente del numero total de tareas en el sistema. En este algoritmo e
 activo y expirado. Cada uno de estos es un array de 140 cabezas de lista, cada una corresponde a una prioridad diferente
 Cada cabeza de lista apunta a una lista doblemente linkeada de procesos a una prioridad dada.
 	la operacion basica del scheduler es la siguiente
+	El scheduler selcciona una tarea de la lista de alta prioridad en el array activo, si el quantum de la tarea expira, se la
+mueve a la lista de espirados. Si la tarea se bloquea antes de que termine su quantum, una vez que el evento ocurre y puede 
+continuar su ejecucion, es llevada de vuelta a su array activo original, y se decremente  su quantum para reflejar el tiempo de 
+CPU que ya fue utilizado. Una vez que el queantum es agotado completamente, se lleva la tarea a el array de expirados. Cuando
+no hay mas tareas en el array activo, el scheduler simplemente intercambia los punteros, entonces los arrays expirados ahora
+son activos y vice veresa. Este metodo asegura que las tareas de baja prioridad no sufriran de inanicion.
+
