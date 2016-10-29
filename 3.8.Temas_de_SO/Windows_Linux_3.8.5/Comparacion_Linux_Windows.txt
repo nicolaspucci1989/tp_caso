@@ -1,0 +1,32 @@
+En linux los threads son kernel threads, el scheduling esta basado en threads, no en procesos.
+	Linux distingue tres clasa de threads para propositos de schedule
+	1- Real-time FIFO.
+	2- Real-time round robin.
+	3- Timesharign.
+
+Los threads Real-time FIFO tienen la mayor prioridad y no se las puede desalojar excepto por una
+nueva thread real-time FIFO de mayor prioridad. Los threads Real-time round-robin son los mismos que 
+real-time FIFO excepto que estos tiene un quentum asocioado, y son desalojables por reloj. Si hay 
+multiples threads round-robin, cada una es ejecutada por su cuantum, luego del cual va al final de la lista
+de real-time round-robin threads. Ninguna de estas clases es de real-time en ningun sentido. Estas clases simplemente
+son de mayor prioridad que las threads en la clase estandard de timesharing. La razon por la cual Linux las llama real-time
+es que Linux se adecua al estandard P1003.4 el cual usa esos nombres. Los threads real-time son internamente 
+representados con niveles de prioridad que van de 0 a 99, 0 siend la mas alta y 99 la mas baja.
+	Los threads convencionales que no son real-time forman una clase separada y usan un algoritmo de schedule diferente
+entonces no compiten con threads real-time. Internamente, estos threads son associados con niveles de prioridad que van de
+100 a 139, es decir, Linux distingue internamente 140 niveles de prioridad (para real-time y no real-time). En cuanto
+a las threads real-time round-robin, Linux alloca tiempo de CPU para los threads que no son real-time basados en sus
+requerimientos y sus niveles de prioridad.
+	Linux asocia un valor "nice" con cada thread. El valor por defecto es 0, pero puede ser cambiada usando en system call
+nice(valor), donde valor va de -20 a +19. Este valor determina la prioridad estatica de cada thread. 
+
+	El funcionamiento interno de los algoritmos de schdule en Linux estan fuertemento relacionados con el disenio de 
+la estructura de datos runqueue, que es usada por el schedule para hacer un seguimiento de todas las tareas que pueden 
+ser ejecutadas en el sistema y seleccionar la siguiente para que ejecute. Un runqueue es asociado con cada CPU en el 
+sistema.
+	Historicamente, un sceduler popular de LInux era el O(1) scheduler. Su nombre se debe a que era capaz de llevar a cabo 
+operaciones de manejo de tarea, tales como selecionar una tarea o poner en cola una tarea para el runqueue, en tiempo constante,
+independientemente del numero total de tareas en el sistema. En este algoritmo el scheduler se organiza en dos arrays,
+activo y expirado. Cada uno de estos es un array de 140 cabezas de lista, cada una corresponde a una prioridad diferente
+Cada cabeza de lista apunta a una lista doblemente linkeada de procesos a una prioridad dada.
+	la operacion basica del scheduler es la siguiente
