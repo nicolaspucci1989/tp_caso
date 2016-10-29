@@ -90,4 +90,25 @@ Administracion de memoria.
 
 		Windows usa paginacion por demanda cluster.
 			En lugar de llevar de a una pagina, se envian ocho paginas a memoria de forma simultanea. Usa el modelo de conjunto de 
-			trabajo
+			trabajo, que es la cantidad de memoria que esta acualmente asignada a un proceso, y contiene las paginas que estan en 
+			memoria principal.
+	
+	Remplazo de Pagina.
+		Linux.	
+			Usa LRU, implementado de dos formas: contadores y stack.
+			En contadores cada entrada en la pagina de tablas es asociada con un timepo de uso, La pagina con el valor mas chico es
+			reemplazada.
+			En stack, la pagina al final del stack es removida y enviada a la cabeza del stack
+
+		Windows
+			Usa FIFO, se elige la pagina mas vieja para ser reemplazada, tiene baja performance. 
+
+			
+	Paginas virtuales.
+		Linux
+			Divide las paginas virtuales en 4 listas: lista activa, lista inactiva sucia, lista inactiva limpia, lista libre.
+
+		
+		Windows.	
+			Divide las paginas virtuales en 4 listas: paginas modificadas, paginas en stand-by, paginas libres, paginas puestas en cero.
+
