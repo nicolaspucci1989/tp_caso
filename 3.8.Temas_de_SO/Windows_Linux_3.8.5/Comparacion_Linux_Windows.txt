@@ -36,4 +36,6 @@ continuar su ejecucion, es llevada de vuelta a su array activo original, y se de
 CPU que ya fue utilizado. Una vez que el queantum es agotado completamente, se lleva la tarea a el array de expirados. Cuando
 no hay mas tareas en el array activo, el scheduler simplemente intercambia los punteros, entonces los arrays expirados ahora
 son activos y vice veresa. Este metodo asegura que las tareas de baja prioridad no sufriran de inanicion.
+	Aqui, diferentes niveles le son asignados diferentes quatum, con mayor quantum asignado a procesos de mayor prioridad.
+	La idea detras de este esquema es que los procesos salgan del kernel lo antes prosible.
 
