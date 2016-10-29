@@ -39,3 +39,23 @@ son activos y vice veresa. Este metodo asegura que las tareas de baja prioridad 
 	Aqui, diferentes niveles le son asignados diferentes quatum, con mayor quantum asignado a procesos de mayor prioridad.
 	La idea detras de este esquema es que los procesos salgan del kernel lo antes prosible.
 
+
+-------------------------------------------------------------------------------------------------------------------------
+Schedule de procesos en Windows.
+	Windows 3.1 usaba un scheduler sin desalojo. Dependia de que el programa informe al SO que ya no necesitaba el
+procesador para que pueda continuar con otro proceso. Windows 95 introdujo un scheduler con desalojo rudimentario, 
+sin embargo, para el soporte de aplicaciones mas antiguas dejaba que las aplicacion de 16 bits ejecuten sin desalojo.
+
+	Las versiones de windows basadas en NT usan un scheduler basado en multicolas, con 32 niveles de prioridad.
+Tiene el objetivo de satisfacer los siguientes requerimientos .
+	1- Dar preferencia a trabajos cortos.
+	2- Dar preferencia a processos atados por E/S.
+	3- Establecer rapidamente la naturaleza del proceso y hacer el schedule de este de forma acorde.
+
+	Todos los procesos reciben un aumento de la prioridad luego de un evento de espera, pero los procesos que han experimentado una
+espera por E/S de teclado  reciben un aumento mayor. 
+
+Windows XP usa un schedule con desalojo por quantum, Este scheduler fue modificado en Windows Vista para usar el registro de 
+contador de ciclo presente en los procesadores modernos para hacer el seguimiento de cuantod ciclos de CPU un thread habia ejecutado,
+en vez de usar rutinas de interrupcion por intervalo de tiempo.
+
