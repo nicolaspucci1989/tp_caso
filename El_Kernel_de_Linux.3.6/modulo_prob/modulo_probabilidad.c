@@ -32,7 +32,8 @@ int cant_lecturas(char * page, char **start, off_t off, int count, int *eof, voi
     return len;
 }
 
-int cambiar_semilla(struct file *filp, const char __user *buff, unsigned long len, void *data)
+int cambiar_semilla(struct file *filp, const char __user *buff,
+												unsigned long len, void *data)
 {
     copy_from_user(&input_semilla[0], buff, len);
     prev_random = simple_strtoul(input_semilla, NULL, 10);
@@ -41,7 +42,8 @@ int cambiar_semilla(struct file *filp, const char __user *buff, unsigned long le
 }
 
 //Funciones de lectura invocada por /dev fs
-static ssize_t probabilidad_read(struct file *file, char *buf, size_t count, loff_t *ppos)
+static ssize_t probabilidad_read(struct file *file, char *buf,
+																		size_t count, loff_t *ppos)
 {
     unsigned int random_pos;
     char *probabilidad_str;
@@ -60,7 +62,8 @@ static ssize_t probabilidad_read(struct file *file, char *buf, size_t count, lof
         return -EINVAL;
     *ppos = len;
     acum_lecturas++;
-    printk(KERN_ALERT "probabilidad: Se ha utilizado la semilla %lu\n", simple_strtoul(input_semilla, NULL, 10));
+    printk(KERN_ALERT "probabilidad: Se ha utilizado la semilla %lu\n",
+																simple_strtoul(input_semilla, NULL, 10));
     return len;
 }
 
@@ -101,7 +104,8 @@ static int __init probabilidad_init(void) {
         input_semilla= (char *) vmalloc(PAGE_SIZE);
         memset(input_semilla, 0, PAGE_SIZE);
 
-        // Definicion de la entrada en /proc con la asociacion de funciones de lectura y escritura
+        // Definicion de la entrada en /proc con la asociacion de funciones de
+				//	lectura y escritura
         proc_entry = proc_create("probabilidad", 0, NULL, &proc_fops);
         if (proc_entry == NULL)
         {
@@ -124,4 +128,3 @@ module_exit(probabilidad_exit);
 // Todo esto se usa con "echo SEED > /proc/probabilidad"  y "cat /proc/probabilidad"
 // para poner la nueva semilla y para ver la cantidad de lecturas realizadas.
 // Y con "cat /dev/probabilidad" para ver la letra aleatoria generada.
-
