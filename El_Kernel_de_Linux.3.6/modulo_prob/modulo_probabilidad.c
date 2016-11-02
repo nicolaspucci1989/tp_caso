@@ -25,25 +25,29 @@ unsigned long get_random(unsigned long m_w, unsigned long m_z)
 }
 
 //Funciones de lectura y escritura invocadas por /proc fs.
-int cant_lecturas(char * page, char **start, off_t off, int count, int *eof, void *data)
+//lee
+static ssize_t cant_lecturas(struct file *filp,char *buf,
+                        size_t count,loff_t *offp )
+//int cant_lecturas(char * page, char **start, off_t off, int count, int *eof, void *data)
 {
     int len;
-    len = sprintf(page, "Lecturas realizadas: %d\n", acum_lecturas);
+    len = sprintf(buf, "Lecturas realizadas: %d\n", acum_lecturas);
     return len;
 }
 
-int cambiar_semilla(struct file *filp, const char __user *buff,
-												unsigned long len, void *data)
+//escribe
+static ssize_t cambiar_semilla(struct file *filp,const char *buf,
+                                  size_t count,loff_t *offp)
+//ssize_t cambiar_semilla(struct file *filp, const char __user *buff, unsigned long len, void *data)
 {
-    copy_from_user(&input_semilla[0], buff, len);
+    copy_from_user(&input_semilla[0], buf, count);
     prev_random = simple_strtoul(input_semilla, NULL, 10);
     printk(KERN_INFO "probabilidad: Se ha cambiado la semilla\n");
-    return len;
+    return count;
 }
 
 //Funciones de lectura invocada por /dev fs
-static ssize_t probabilidad_read(struct file *file, char *buf,
-																		size_t count, loff_t *ppos)
+static ssize_t probabilidad_read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
     unsigned int random_pos;
     char *probabilidad_str;
@@ -62,8 +66,7 @@ static ssize_t probabilidad_read(struct file *file, char *buf,
         return -EINVAL;
     *ppos = len;
     acum_lecturas++;
-    printk(KERN_ALERT "probabilidad: Se ha utilizado la semilla %lu\n",
-																simple_strtoul(input_semilla, NULL, 10));
+    printk(KERN_ALERT "probabilidad: Se ha utilizado la semilla %lu\n", simple_strtoul(input_semilla, NULL, 10));
     return len;
 }
 
@@ -80,12 +83,19 @@ static struct miscdevice probabilidad_dev = {
     &probabilidad_fops
 };
 
-// Fops para /proc
-static const struct file_operations proc_fops = {
-	.owner = THIS_MODULE,
-	.read = cant_lecturas,
-	.write = cambiar_semilla,
+struct file_operations proc_fops = {
+  .read = cant_lecturas,
+  .write = cambiar_semilla
 };
+
+void crear_entrada_proc(void)
+{
+  proc_entry = proc_create("probabilidad", 0, NULL, &proc_fops);
+  if( proc_entry == NULL )
+    {
+      printk(KERN_INFO "probabilidad: No se pudo crear la entrada en /proc\n");
+    }
+}
 
 // Funciones utilizadas por la creacion y destruccion del modulo
 static int __init probabilidad_init(void) {
@@ -104,13 +114,8 @@ static int __init probabilidad_init(void) {
         input_semilla= (char *) vmalloc(PAGE_SIZE);
         memset(input_semilla, 0, PAGE_SIZE);
 
-        // Definicion de la entrada en /proc con la asociacion de funciones de
-				//	lectura y escritura
-        proc_entry = proc_create("probabilidad", 0, NULL, &proc_fops);
-        if (proc_entry == NULL)
-        {
-            printk(KERN_INFO "probabilidad: No se pudo crear la entrada en /proc\n");
-        }
+        // Definicion de la entrada en /proc con la asociacion de funciones de lectura y escritura
+      crear_entrada_proc();
     }
     return ret;
 }
@@ -128,3 +133,4 @@ module_exit(probabilidad_exit);
 // Todo esto se usa con "echo SEED > /proc/probabilidad"  y "cat /proc/probabilidad"
 // para poner la nueva semilla y para ver la cantidad de lecturas realizadas.
 // Y con "cat /dev/probabilidad" para ver la letra aleatoria generada.
+
