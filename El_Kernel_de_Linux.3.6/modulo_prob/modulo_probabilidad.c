@@ -32,7 +32,7 @@ static ssize_t cant_lecturas(struct file *filp,char *buf,
 {
     int len;
     len = sprintf(buf, "Lecturas realizadas: %d\n", acum_lecturas);
-    return len;
+    return count;
 }
 
 //escribe
