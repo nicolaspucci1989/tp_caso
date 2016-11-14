@@ -1,0 +1,29 @@
+#/bin/bash
+
+archSalida="$(eval echo ~$USER)/salida.txt"
+archUser="/etc/passwd"
+archGroup="/etc/group"
+
+case "$1" in
+	-u)
+		if [[ 2 -eq $# ]] ; then
+			if  grep -q $2 $archUser; then
+				grep ^$2 $archUser | sed "s/:/	/g" | tee -a  $archSalida
+			else
+				echo "Usuario no encontrado $2" | tee -a $archSalida
+			fi
+		else 
+			sed "s/:/	/g" $archUser | tee -a $archSalida
+		fi
+		;;
+	-g) 
+		if grep -q ^$2 $archGroup ; then
+			grep ^$2 $archGroup | awk -F: '{if($4==""){print $1 ": grupo sin usuarios"} else {print $1"\t"$2"\t"$3"\t"$4}}'| tee -a salida.txt
+		else
+			echo "Grupo inexistente"
+		fi
+		;;
+	*)
+		echo "opcion incorrecta"
+		exit 1
+esac
