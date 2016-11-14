@@ -30,8 +30,14 @@ static ssize_t cant_lecturas(struct file *filp,char *buf,
                         size_t count,loff_t *offp )
 //int cant_lecturas(char * page, char **start, off_t off, int count, int *eof, void *data)
 {
+    static int fin = 0;
     int len;
+    if(fin){
+        fin = 0;
+        return 0;
+    }
     len = sprintf(buf, "Lecturas realizadas: %d\n", acum_lecturas);
+    fin = 1;
     return count;
 }
 
